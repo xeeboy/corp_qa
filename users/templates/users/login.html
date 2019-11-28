@@ -1,0 +1,15 @@
+{% extends 'dw_query/base.html' %}
+{% block title %}
+    <title>登录</title>
+{% endblock %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <h2>欢迎登录</h2>
+    <form method="post" action="{% url 'users:login' %}" class="form">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button name="submit" class="btn btn-primary">登录</button>
+        <input type="hidden" name="next" value="{% url 'dw_query:index' %}"/>
+    </form>
+{% endblock content %}

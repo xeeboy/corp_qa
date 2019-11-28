@@ -1,0 +1,17 @@
+{% extends 'dw_query/base.html' %}
+{% block title %}
+    <title>注册</title>
+{% endblock %}
+{% load bootstrap3 %}
+
+{% block content %}
+{% if msg %}
+    <li class="badge-warning">{{ msg }}</li>
+{% endif %}
+<form action="{% url 'users:register' %}" method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button name="submit" class="btn btn-primary">登记</button>
+    <input type="hidden" name="next" value="{% url 'dw_query:index' %}"/>
+</form>
+{% endblock content %}

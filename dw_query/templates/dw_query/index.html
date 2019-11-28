@@ -1,0 +1,60 @@
+{% extends "dw_query/base.html" %}
+{% block title %}
+    <title>Home Page</title>
+{% endblock %}
+
+{% block content %}
+  <div class="my-3 p-3 bg-white rounded shadow-sm">
+    <h6 class="border-bottom border-gray pb-2 mb-0" style="color: #e83e8c;font-size: large">Recent UnPass</h6>
+      {% for status in upstatus %}
+          <a href="{% url 'audit:topics' status.id %}" target="_blank"><div class="media text-muted pt-3">
+            <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" focusable="false" role="img" aria-label="Placeholder: 32x32">
+                <title>点击进入</title>
+                    <rect width="100%" height="100%" fill="#e83e8c"/>
+            </svg>
+            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                <strong class="d-block text-gray-dark">@{{ status.caseto_by_qa }} ID:{{ status.id }}</strong>
+            {% for up in ups %}
+              {% ifequal up.id status.id %}
+                {{ up.pro_date }}生产的：{{ up.customer }}-{{ up.up_name }}（批号：{{ up.batch }}）{{ up.up_type }}>>>{{ up.up_desc }}
+                <p style="color: #e83e8c">Suggestions({{ up.audittopic_set.count }})</p>
+              {% endifequal %}
+            {% endfor %}
+          </div></a>
+      {% endfor %}
+    <small class="d-block text-right mt-3">
+      <a href="{% url 'dw_query:all_unpass' %}" style="color: royalblue;font-size: large">Search more ...</a>
+    </small>
+  </div>
+  <div class="my-3 p-3 bg-white rounded shadow-sm">
+    <h6 class="border-bottom border-gray pb-2 mb-0" style="color: #007bff;font-size: large"> Recent actions for Internal Audit</h6>
+    {% for topic in topics %}
+        <div class="media text-muted pt-3">
+            <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" focusable="false" role="img" aria-label="Placeholder: 32x32">
+                <rect width="100%" height="100%" fill="#007bff"/>
+                <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
+            </svg>
+            <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <strong class="text-gray-dark">{{ topic.sugg_act|linebreaks }}</strong>
+                    <a href="{% url 'audit:follow' topic.id %}" target="_blank">Follow({{ topic.entry_set.count }})</a>
+                </div>
+            {% for up_topic in ups_topics %}
+                {% ifequal up_topic.id topic.unpass_id %}
+                    <span class="d-block">
+                        <a href="{% url 'audit:topics' topic.unpass_id %}" target="_blank">@Case ID<{{ topic.unpass_id }}>: </a>
+                        {{ up_topic.pro_date }}生产的：{{ up_topic.customer }}-{{ up_topic.up_name }}（批号：{{ up_topic.batch }}）{{ up_topic.up_type }}>>>{{ up_topic.up_desc }}
+                    </span>
+                {% endifequal %}
+            {% endfor %}
+                <span class="d-block"><a style="color: #cc1111">@{{ topic.to_part }}</a> {{ topic.date_added|date:'Y-m-d H:i' }}</span>
+            </div>
+        </div>
+    {% empty %}
+        <h6 class="border-bottom border-gray pb-2 mb-0">暂时还没有任何行动建议。</h6>
+    {% endfor %}
+    <small class="d-block text-right mt-3">
+      <a href="{% url 'dw_query:all_suggestion' %}" style="color: royalblue;font-size: large">All suggestions ...</a>
+    </small>
+  </div>
+{% endblock content %}

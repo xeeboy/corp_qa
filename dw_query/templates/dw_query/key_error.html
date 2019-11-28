@@ -1,0 +1,13 @@
+{% extends 'dw_query/base.html' %}
+{% block title %}
+    <title>信息查询</title>
+{% endblock %}
+{% block content %}
+    <div class="jumbotron">
+        <h2>请输入正确关键词（以p或up开始，不区分大小写）:</h2>
+        <ul>
+            <li>up<批号>”按批号模糊检索不合格品目录，用于查看某批次是否产生过不良, 如“up91111”、“upH32-91111”；</li>
+            <li>p<客户+产品型号+颜色+批号>按任意单个或连续的组合检索检测数据，如“pY-105-3”、“p莱尼”、“p7026(tm4)黑” 等。</li>
+        </ul>
+    </div>
+{% endblock content %}

@@ -1,0 +1,14 @@
+{% extends 'dw_query/base.html' %}
+{% block title %}
+    <title>添加已实施措施</title>
+{% endblock %}
+{% load bootstrap3 %}
+
+{% block content %}
+
+<form enctype="multipart/form-data" action="{% url 'audit:new_entry' topic_id %}" method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button name="submit" class="btn btn-primary">添加</button>
+</form>
+{% endblock content %}

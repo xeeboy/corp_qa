@@ -1,0 +1,43 @@
+{% extends 'dw_query/base.html' %}
+{% block title %}
+    <title>使用帮助</title>
+{% endblock %}
+{% block content %}
+    <div class="help-block" style="font-family: 'sans-serif'">
+        <h2 class="highlight" align="center">通用不合格Case处置流程</h2>
+        <p align="center">QA Tips: 请配合<strong style="color: #007bff">GotoReview</strong>应用使用, 本站不提供在线填单</p>
+    </div>
+    <div class="jumbotron">
+        <h5><a class="font-italic" style="color: #ba8b00"><strong>目</strong>标：相同问题不重复发生！</a></h5>
+        <h5><a style="color: #005cbf"><strong>1、围堵措施：</strong></a>首先判断在库品，在途品，在产品，将判断结果及处置措施写在《不合格品处理单》的纠正措施栏中；</h5>
+        <h5><a style="color: #005cbf"><strong>2、根本原因：</strong></a>《不合格品处理单》的原因分析栏中，在需要时要对FEMA进行检查；</h5>
+        <h5><a style="color: #005cbf"><strong>3、纠正措施：</strong></a>准备计划实行的纠正措施，责任人，完成日期，并在完成后提供相关的证据附件(可单独另附), 填写在《不合格品处理单》的纠正措施栏中（每项措施必须包含责任人与计划完成日期）；</h5>
+        <h5><a style="color: #005cbf"><strong>4、预防措施：</strong></a>按下列顺序依次检查，按需完成<br>
+            ①	更新控制计划，将更新后的控制计划拍照作为附件备用；<br>
+            ②	更新作业指导书及工艺卡，将更新后的作业指导书拍照作为附件备用；<br>
+            ③	在回复客诉的报告时，则具体问题具体对待。<br>
+            将以上内容不断更新到《不合格品处理单》的预防措施栏中；<br>
+        </h5>
+        <h5><a style="color: #005cbf"><strong>5、跟踪反馈：</strong></a>对不符合项，相关部门应及时改进并提供任何改善证据。</h5>
+        <h5 class="font-italic"><small>上述任何针对不良的改善行为应保存在[评审系统]的处理跟踪栏的处理措施中。</small></h5>
+    </div>
+
+    <div class="jumbotron">
+        <h2 class="bg-info">本站功能简介：</h2>
+        <p>
+            1、查询：<br>
+            右侧搜索栏输入“关键字+信息”可查询当前<strong style="color: #005cbf">不合格品信息、性能检测数据</strong>；
+        </p>
+        <p>
+            2、主页信息：<br>
+            ① Recent Unpass >>> 最近产生的不良品信息： <a class="help">@ 主导部门  +  不良描述</a>，<br>
+            右侧 <a style="font-size: large;color: #007bff">Search more</a> 展示所有并提供检索功能；<br>
+            ② Recent suggest actions for Internal Audit >>> 最近更新的针对各不良提出的整改建议措施，<br>
+            右侧 <a style="font-size: large;color: #007bff">Follow</a> 进入跟进Case并提供相关行动信息及佐证资料上传;<br>
+            右侧 <a style="font-size: large;color: #007bff">All suggestions</a> 展示所有整改建议并提供检索，<strong>任何人都可以很方便提供建议项目并指导团队跟进！</strong>
+        </p>
+        <br>
+        <br>
+        <h3 style="color: #ba8b00;font-size: larger" align="center">Copyright@滁州德威质量 Contact with yuxibao@chinadewei.com</h3>
+    </div>
+{% endblock content %}

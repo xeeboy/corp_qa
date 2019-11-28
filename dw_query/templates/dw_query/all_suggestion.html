@@ -1,0 +1,75 @@
+{% extends "dw_query/base.html" %}
+{% block title %}
+    <title>建议项目录</title>
+{% endblock %}
+{% load static %}
+
+{% block content %}
+    <div class="my-3 p-3 bg-white rounded shadow-sm">
+        <form class="form-inline my-2 my-lg-0" action="{% url 'dw_query:all_suggestion' %}">
+            {% csrf_token %}
+            <input class="form-control mr-sm-2" type="text" value="{{ request.GET.up_id }}" placeholder="不合格品ID" aria-label="Search" name="up_id">
+            <label for="uptype">部门:</label>
+            <select class="mr-lg-3" id="uptype" name="to_part">
+                <option>--select--</option>
+                {% for part in parts %}
+                    <option {% ifequal request.GET.to_part part %}selected{% endifequal %}>{{ part }}</option>
+                {% endfor %}
+            </select>
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索一</button>
+        </form>
+        <form class="form-inline my-2 my-lg-0" action="{% url 'dw_query:all_suggestion' %}">
+            {% csrf_token %}
+            <input class="form-control mr-sm-2" type="text" value="{{ request.GET.customer }}" placeholder="客户" aria-label="Search" name="customer">
+            <input class="form-control mr-sm-2" type="text" value="{{ request.GET.proname }}" placeholder="产品名称" aria-label="Search" name="proname">
+            <label for="uptype">不合格类型:</label>
+            <select class="mr-lg-3" id="uptype" name="uptype">
+                <option {% ifequal request.GET.uptype '制程不合格' %}selected{% endifequal %}>制程不合格</option>
+                <option {% ifequal request.GET.uptype '退货不合格' %}selected{% endifequal %}>退货不合格</option>
+                <option {% ifequal request.GET.uptype '全部类型' %}selected{% endifequal %}>全部类型</option>
+            </select>
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索二</button>
+        </form>
+
+        {% for topic in topics %}
+            <div class="media text-muted pt-3">
+                <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" focusable="false" role="img" aria-label="Placeholder: 32x32">
+                    <rect width="100%" height="100%" fill="#007bff"/>
+                    <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
+                </svg>
+                <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <strong class="text-gray-dark">{{ topic.sugg_act|linebreaks }}</strong>
+                        <a href="{% url 'audit:follow' topic.id %}" target="_blank">Follow({{ topic.entry_set.count }})</a>
+                    </div>
+                {% for up_topic in ups_topics %}
+                    {% ifequal up_topic.id topic.unpass_id %}
+                        <span class="d-block">
+                            <a href="{% url 'audit:topics' topic.unpass_id %}" target="_blank">@Case ID<{{ topic.unpass_id }}>: </a>
+                            {{ up_topic.pro_date }}生产的：{{ up_topic.customer }}-{{ up_topic.up_name }}（批号：{{ up_topic.batch }}）{{ up_topic.up_type }}>>>{{ up_topic.up_desc }}
+                        </span>
+                    {% endifequal %}
+                {% endfor %}
+                    <span class="d-block"><a style="color: #cc1111">@{{ topic.to_part }}</a> {{ topic.date_added|date:'Y-m-d H:i' }}</span>
+                </div>
+            </div>
+        {% empty %}
+            <h6 class="border-bottom border-gray pb-2 mb-0">暂时还没有任何行动建议。</h6>
+        {% endfor %}
+    </div>
+    <div class="pagination">
+        <span class="row">
+            {% if topics.has_previous %}
+                <a href="?page=1&{{ params|join:'&' }}" class="page-link">&laquo; First</a>
+                <a href="?page={{ topics.previous_page_number }}&{{ params|join:'&' }}" class="page-link">Previous</a>
+            {% endif %}
+            <span class="page-link">
+                Page {{ topics.number }} of {{ topics.paginator.num_pages }}.
+            </span>
+            {% if topics.has_next %}
+                <a href="?page={{ topics.next_page_number }}&{{ params|join:'&' }}" class="page-link">Next</a>
+                <a href="?page={{ topics.paginator.num_pages }}&{{ params|join:'&' }}" class="page-link">Last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock content %}

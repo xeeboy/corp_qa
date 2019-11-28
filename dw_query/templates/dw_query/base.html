@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+{% load bootstrap3 %}
+{% load static %}
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="制程控制在线">
+    <meta name="author" content="yxbaju@qq.com">
+    <meta name="generator" content="rev 1.0.2">
+      {% block title %}{% endblock %}
+      {% bootstrap_css %}
+      {% bootstrap_javascript %}
+      <link href={% static "css/bootstrap.min.css" %} rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      <link rel="stylesheet" type="text/css" href={% static "dw_query/offcanvas.css" %}>
+      <link rel="shortcut icon" href={% static "dw_query/dw.ico" %} type="image/x-icon" />
+  </head>
+  <body class="bg-light">
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-secondary">
+        <a class="navbar-brand mr-auto mr-lg-0" href="{% url 'dw_query:index' %}">Go<small> Home</small></a>
+      <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-lg-auto">
+          <li class="nav-item mr-lg-5">
+            <a class="nav-link" href="{% url 'users:audit_help' %}">>>>Let's begin Internal Audit</a>
+          </li>
+        </ul>
+        {% if user.is_authenticated %}
+            <li class="nav-item mr-lg-5"><a class="font-weight-bolder" style="color: #80bdff">欢迎前来, {{ user.username }}</a></li>
+            <li class="nav-item mr-lg-5"><a class="font-weight-bolder" href="{% url 'users:logout' %}" style="color: #80bdff">退出</a></li>
+        {% else %}
+            <li class="nav-item mr-lg-5"><a class="font-weight-bolder" href="{% url 'users:register' %}" style="color: #80bdff">注册</a></li>
+            <li class="nav-item mr-lg-5"><a class="font-weight-bolder" href="{% url 'users:login' %}" style="color: #80bdff">进入</a></li>
+        {% endif %}
+
+        <form class="form-inline my-2 my-lg-0" action="{% url 'dw_query:home_search' %}">
+            {% csrf_token %}
+          <input class="form-control mr-sm-2" type="text" placeholder="关键字" aria-label="Search" name="keyword">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
+        </form>
+      </div>
+    </nav>
+    <main role="main" class="container">
+      <div class="d-flex align-items-center p-1 my-3 text-white-50 bg-purple rounded">
+        <img src={% static "dw_query/dw.ico" %} alt="德威公司" width="48" height="48">
+        <div class="lh-100">
+          <h6 class="mb-2 text-white lh-100">QA department from DW Group!</h6>
+          <small>Quanlity is life of Corp.</small>
+        </div>
+      </div>
+        {% block content %}{% endblock content %}
+    </main>
+    <script src={% static "dw_query/offcanvas.js" %}></script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+﻿{% extends "dw_query/base.html" %}
+{% block title %}
+    <title>建议措施详情</title>
+{% endblock %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <div class="main-container">
+        <section>
+            <form class="form-check-label">{% bootstrap_form form %}</form>
+        </section>
+        <section>
+            <form class="form-check-label">
+                {% for topic in topics %}
+                    <p class="bg-info">@{{ topic.to_part }} {{ topic.date_added|date:'Y-m-d H:i' }}</p>
+                    <ul>
+                        <li><a class="font-italic font-weight-bold" style="color: #007bff">Suggest action: <--from: {{ topic.from_user }}</a><a class="font-weight-bold" style="color: #a71d2a;font-size: large;">{{ topic.sugg_act|linebreaks }}</a></li>
+                        {% if topic.image %}
+                            <li>相关图片：<a href="/media/{{ topic.image }}"><img src="/media/{{ topic.image }}" class="img-rounded" width="200ppx"></a></li>
+                        {% endif %}
+                        {% if topic.file %}
+                            <li><a href="/media/{{ topic.file }}">相关文件：{{ topic.file}}</a></li>
+                        {% endif %}
+                        <li><button class="btn-lg"><a href="{% url 'audit:follow' topic.id %}" target="_blank">Follow({{ topic.entry_set.count }})</a></button></li>
+                    </ul>
+                {% empty %}
+                    <li>还未添加建议措施。</li>
+                {% endfor %}
+            </form>
+        </section>
+        <section>
+            <button><a href="{% url 'audit:new_topic' unpass_id %}"> >> 添加</a></button>
+        </section>
+    </div>
+{% endblock content %}

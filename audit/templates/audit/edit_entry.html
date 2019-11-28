@@ -1,0 +1,15 @@
+{% extends 'dw_query/base.html' %}
+{% block title %}
+    <title>编辑措施</title>
+{% endblock %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <form enctype="multipart/form-data" action="{% url 'audit:edit_entry' entry.id %}" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button name="submit" class="btn btn-primary">保存更改</button>
+        {% endbuttons %}
+    </form>
+{% endblock content %}

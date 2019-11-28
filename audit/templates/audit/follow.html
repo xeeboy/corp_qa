@@ -1,0 +1,38 @@
+﻿{% extends "dw_query/base.html" %}
+{% block title %}
+    <title>Follow the topic</title>
+{% endblock %}
+{% load bootstrap3 %}
+{% load static %}
+
+{% block content %}
+    <div class="main-container">
+        <section>
+            <form class="form-check-label" method="get">
+                {% for entry in entries %}
+                    <p class="bg-info">Action From {{ entry.from_part }} {{ entry.date_added|date:'Y-m-d H:i' }}</p>
+                    <ul>
+                        <li><a class="font-italic font-weight-bold" style="color: #007bff">Current Action:</a><a class="font-weight-bold" style="color: #a71d2a;font-size: large;">{{ entry.act|linebreaks }}</a></li>
+                        {% if entry.image %}
+                            <li>相关图片：<a href="/media/{{ entry.image }}"><img src="/media/{{ entry.image }}" class="img-rounded" width="200ppx"></a></li>
+                        {% endif %}
+                        {% if entry.file %}
+                            <li><a href="/media/{{ entry.file }}">相关文件：{{ entry.file}}</a></li>
+                        {% endif %}
+                    </ul>
+                    {% buttons %}
+                        {% ifequal user.username entry.from_part  %}
+                            <button><a href="{% url 'audit:edit_entry' entry.id %}">修改</a></button>
+                            <button><a href="{% url 'audit:del_entry' entry.id %}">删除</a></button>
+                        {% endifequal %}
+                    {% endbuttons %}
+                {% empty %}
+                    <li>还未添加相应整改措施。</li>
+                {% endfor %}
+            </form>
+        </section>
+        <section>
+            <button class="btn-lg"><a href="{% url 'audit:new_entry' topic_id %}"> >> Add New Action</a></button>
+        </section>
+    </div>
+{% endblock content %}

@@ -1,0 +1,53 @@
+﻿{% extends "dw_query/base.html" %}
+{% block title %}
+    <title>不合格目录</title>
+{% endblock %}
+{% load static %}
+{% block content %}
+  <div class="my-3 p-3 bg-white rounded shadow-sm">
+    <form class="form-inline my-2 my-lg-0" action="{% url 'dw_query:all_unpass' %}">
+        {% csrf_token %}
+        <input class="form-control mr-sm-2" type="text" value="{{ request.GET.customer}}" placeholder="客户" aria-label="Search" name="customer">
+        <input class="form-control mr-sm-2" type="text" value="{{ request.GET.proname }}" placeholder="产品名称" aria-label="Search" name="proname">
+	<input class="form-control mr-sm-2" type="text" value="{{ request.GET.batch }}" placeholder="批号" aria-label="Search" name="batch">
+        <label for="uptype">不合格类型:</label>
+        <select class="mr-lg-3" id="uptype" name="uptype">
+	    <option {% ifequal request.GET.uptype '全部类型' %}selected{% endifequal %}>全部类型</option>
+            <option {% ifequal request.GET.uptype '制程不合格' %}selected{% endifequal %}>制程不合格</option>
+            <option {% ifequal request.GET.uptype '退货不合格' %}selected{% endifequal %}>退货不合格</option> 
+        </select>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
+    </form>
+    {% for status in upstatus %}
+      <a href="{% url 'audit:topics' status.id %}" target="_blank"><div class="media text-muted pt-3">
+        <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" focusable="false" role="img" aria-label="Placeholder: 32x32">
+            <title>点击进入</title>
+                <rect width="100%" height="100%" fill="#e83e8c"/>
+        </svg>
+        <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+            <strong class="d-block text-gray-dark">@{{ status.caseto_by_qa }} ID:{{ status.id }}</strong>
+        {% for up in ups %}
+          {% ifequal up.id status.id %}
+            {{ up.pro_date }}生产的：{{ up.customer }}-{{ up.up_name }}（批号：{{ up.batch }}）{{ up.up_type }}>>>{{ up.up_desc }}
+            <p style="color: #e83e8c">Suggestions({{ up.audittopic_set.count }})</p>
+          {% endifequal %}
+        {% endfor %}
+      </div></a>
+    {% endfor %}
+  </div>
+  <div class="pagination">
+    <span class="row">
+        {% if upstatus.has_previous %}
+            <a href="?page=1&{{ params|join:'&' }}" class="page-link">&laquo; First</a>
+            <a href="?page={{ upstatus.previous_page_number }}&{{ params|join:'&' }}" class="page-link">Previous</a>
+        {% endif %}
+        <span class="page-link">
+            Page {{ upstatus.number }} of {{ upstatus.paginator.num_pages }}.
+        </span>
+        {% if upstatus.has_next %}
+            <a href="?page={{ upstatus.next_page_number }}&{{ params|join:'&' }}" class="page-link">Next</a>
+            <a href="?page={{ upstatus.paginator.num_pages }}&{{ params|join:'&' }}" class="page-link">Last &raquo;</a>
+        {% endif %}
+    </span>
+  </div>
+{% endblock content %}
