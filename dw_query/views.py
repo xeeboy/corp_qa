@@ -2,6 +2,7 @@ from urllib.parse import urljoin
 
 from django.views.decorators.csrf import csrf_exempt
 
+from dw_query.ocr import BdOCR, AppID, API_Key, Secret_Key
 from . import BizWxUtil, jokes
 from . import models, serial
 from audit.models import AuditTopic
@@ -156,6 +157,7 @@ def chat_reply(request):
         return BizWxUtil.responseEcho(request)
     if request.method == 'POST':
         message = BizWxUtil.parseMessage(request)
+        # print(message)
         keyword = message.get('Content', '').lower()
         resp_dict = {'to_user': message['FromUserName'],
                      'from_user': message['ToUserName'],
@@ -180,6 +182,23 @@ def chat_reply(request):
                      'pic_url': pic_url,
                      'url': query_url},
                 ]
+        elif message.get('EventKey') == 'ocr_read':
+            global create_time, txt
+            global from_user
+            create_time = message.get('CreateTime')
+            from_user = message.get('FromUserName')
+        elif message.get('MsgType') == 'image':
+            if message.get('CreateTime') == create_time and message.get('FromUserName') == from_user:
+                try:
+                    ocr = BdOCR(AppID, API_Key, Secret_Key)
+                    words = ocr.read_words(message.get('PicUrl'))
+                    lines = [line['words'] for line in words]
+                    assert len(lines) > 0
+                    txt = '\n'.join(lines)
+                except Exception:
+                    txt = "Can't OCR the image passed,\nPlease try reload image else again!"
+                finally:
+                    content = txt
         else:
             pass
         resp_dict['content'] = content
