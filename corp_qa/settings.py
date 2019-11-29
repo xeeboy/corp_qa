@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'q)56=0&a(wwweqogetzea#w1)$s^l(#0t7)ku&xpdd$a61scl1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -80,10 +80,10 @@ WSGI_APPLICATION = 'corp_qa.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'qadb',
+        'NAME': 'qadb_backup',
         'USER': 'root',
         'PASSWORD': '123456',
-        'HOST': '192.168.50.145',
+        'HOST': 'localhost',
         'PORT': 3306
     }
 }

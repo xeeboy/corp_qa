@@ -157,24 +157,30 @@ def chat_reply(request):
     if request.method == 'POST':
         message = BizWxUtil.parseMessage(request)
         keyword = message.get('Content', '').lower()
-        text = {
-            'to_user': message['FromUserName'],
-            'from_user': message['ToUserName']
-        }
+        resp_dict = {'to_user': message['FromUserName'],
+                     'from_user': message['ToUserName'],
+                     'type': 'text'}
         content = ''
         if message.get('EventKey') == 'how_query':
             content = '''(1) p + “<客户名>或<产品名>或<批号>”: 获取检测数据查询网址；\n(2) up + “<批号>”: 获取该批次不良信息；\nTips：如果微信浏览器不能打开，请选择其它浏览器打开！'''
         elif message.get('EventKey') == 'get_joke':
             url = r'http://xiaodiaodaya.cn/wapindex.aspx?classid=602'
-            content = jokes.gen_joke(url, user=text['to_user'])
+            content = jokes.gen_joke(url, user=resp_dict['to_user'])
         elif keyword:
             if any([keyword.startswith('p') and len(keyword) > 1,
                     keyword.startswith('up') and len(keyword) > 2]):
                 query_url = 'http://%s/search?keyword=' % request.META['HTTP_HOST']
-                content = '<a href="%s">请点击查看</a>' \
-                          '' % urljoin(query_url, keyword)
+                query_url = urljoin(query_url, keyword)
+                pic_url = urljoin('http://%s' % request.META['HTTP_HOST'],
+                                  'static/dw_query/query_pic.jpg')
+                resp_dict['type'] = 'news'
+                resp_dict['data'] = [
+                    {'title': '您正在查询检测数据 + 关键字<%s>' % keyword[1:] if keyword.startswith('p') else '您正在查询不良品记录 + 关键字<%s>' % keyword[2:],
+                     'description': '请点击进入网页查看结果！',
+                     'pic_url': pic_url,
+                     'url': query_url},
+                ]
         else:
             pass
-        text['type'] = 'text'
-        text['content'] = content
-        return BizWxUtil.parseResponse(text)
+        resp_dict['content'] = content
+        return BizWxUtil.parseResponse(resp_dict)

@@ -6,8 +6,8 @@ from xml.etree.cElementTree import fromstring
 
 def getCryptor():
     # TODO hard code configuration
-    sToken = "9AcDz9eC4vH1Ygt7sC6jjUvNP"
-    sEncodingAESKey = "hGTY0NgybjLfGRNlQXhgB7jDNuQbPkoSH68SFdIR1Pa"
+    sToken = "fjPkaNLYSkhkKtIvDLILY"
+    sEncodingAESKey = "zCp2gEZPNj00hvtPhqqGKxvDgGPoXyBQKfBlsPxdHQe"
     sCorpID = "wwa6b01f2f06d58c58"
     return WXBizMsgCrypt(sToken, sEncodingAESKey, sCorpID)
 
