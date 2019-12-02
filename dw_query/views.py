@@ -2,7 +2,7 @@ from urllib.parse import urljoin
 
 from django.views.decorators.csrf import csrf_exempt
 
-from dw_query.ocr import BdOCR, AppID, API_Key, Secret_Key
+from .ocr import BdOCR, AppID, API_Key, Secret_Key
 from . import BizWxUtil, jokes
 from . import models, serial
 from audit.models import AuditTopic
@@ -183,12 +183,15 @@ def chat_reply(request):
                      'url': query_url},
                 ]
         elif message.get('EventKey') == 'ocr_read':
-            global create_time, txt
-            global from_user
-            create_time = message.get('CreateTime')
-            from_user = message.get('FromUserName')
+            ocr_event = models.OcrEvent()
+            ocr_event.from_user = message.get('FromUserName')
+            ocr_event.create_time = message.get('CreateTime')
+            ocr_event.save()
+
         elif message.get('MsgType') == 'image':
-            if message.get('CreateTime') == create_time and message.get('FromUserName') == from_user:
+            if (message.get('CreateTime'),) in models.OcrEvent.objects.filter(
+                    from_user=message.get('FromUserName')).values_list('create_time'):
+                txt = ''
                 try:
                     ocr = BdOCR(AppID, API_Key, Secret_Key)
                     words = ocr.read_words(message.get('PicUrl'))

@@ -80,10 +80,10 @@ WSGI_APPLICATION = 'corp_qa.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'qadb_backup',
+        'NAME': 'qadb',
         'USER': 'root',
         'PASSWORD': '123456',
-        'HOST': 'localhost',
+        'HOST': '192.168.50.145',
         'PORT': 3306
     }
 }

@@ -95,3 +95,8 @@ class JokeUrls(models.Model):
     user = models.CharField(max_length=32)
     url = models.CharField(max_length=150)
 
+
+class OcrEvent(models.Model):
+    from_user = models.CharField(max_length=32)
+    create_time = models.CharField(max_length=16)
+
