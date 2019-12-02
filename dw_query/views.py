@@ -157,7 +157,6 @@ def chat_reply(request):
         return BizWxUtil.responseEcho(request)
     if request.method == 'POST':
         message = BizWxUtil.parseMessage(request)
-        # print(message)
         keyword = message.get('Content', '').lower()
         resp_dict = {'to_user': message['FromUserName'],
                      'from_user': message['ToUserName'],
@@ -189,8 +188,10 @@ def chat_reply(request):
             ocr_event.save()
 
         elif message.get('MsgType') == 'image':
-            if (message.get('CreateTime'),) in models.OcrEvent.objects.filter(
-                    from_user=message.get('FromUserName')).values_list('create_time'):
+            event_img = models.OcrEvent.objects.filter(
+                from_user=message.get('FromUserName'))
+            create_time = message.get('CreateTime')
+            if (create_time,) in event_img.values_list('create_time'):
                 txt = ''
                 try:
                     ocr = BdOCR(AppID, API_Key, Secret_Key)
@@ -198,6 +199,7 @@ def chat_reply(request):
                     lines = [line['words'] for line in words]
                     assert len(lines) > 0
                     txt = '\n'.join(lines)
+                    event_img.filter(create_time=create_time).delete()
                 except Exception:
                     txt = "Can't OCR the image passed,\nPlease try reload image else again!"
                 finally:
