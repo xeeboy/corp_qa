@@ -192,7 +192,7 @@ def chat_reply(request):
                 from_user=message.get('FromUserName'))
             create_time = message.get('CreateTime')
             if (create_time,) in event_img.values_list('create_time'):
-                txt = ''
+                txt = '未能成功，请重试！'
                 try:
                     ocr = BdOCR(AppID, API_Key, Secret_Key)
                     words = ocr.read_words(message.get('PicUrl'))
@@ -201,7 +201,7 @@ def chat_reply(request):
                     txt = '\n'.join(lines)
                     event_img.filter(create_time=create_time).delete()
                 except Exception:
-                    txt = "Can't OCR the image passed,\nPlease try reload image else again!"
+                    pass
                 finally:
                     content = txt
         else:
