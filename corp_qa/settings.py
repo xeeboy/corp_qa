@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'dw_query',
     'audit',
     'users',
+    'visual',
 ]
 
 MIDDLEWARE = [

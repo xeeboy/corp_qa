@@ -1,3 +1,5 @@
+sqlalchemy
+pandas
 certifi==2019.9.11
 chardet==3.0.4
 Django==2.2.6
@@ -8,6 +10,7 @@ idna==2.8
 lxml==4.4.2
 Pillow==6.2.1
 pycryptodome==3.9.4
+pygal==2.4.0
 PyMySQL==0.9.3
 pytz==2019.3
 requests==2.22.0

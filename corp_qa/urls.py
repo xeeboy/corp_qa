@@ -23,6 +23,7 @@ urlpatterns = [
     path('', include(('dw_query.urls', 'dw_query'))),
     path('', include(('audit.urls', 'audit'))),
     path('', include(('users.urls', 'users'))),
+    path('', include(('visual.urls', 'visual'))),
 ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 ) + static(
