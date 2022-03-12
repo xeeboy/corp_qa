@@ -9,7 +9,7 @@ lxml==4.4.2
 mysql-connector-python==8.0.18
 numpy==1.17.4
 pandas==0.25.3
-Pillow==6.2.1
+Pillow==9.0.1
 protobuf==3.11.1
 pycryptodome==3.9.4
 pygal==2.4.0
