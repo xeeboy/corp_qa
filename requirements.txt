@@ -10,7 +10,7 @@ mysql-connector-python==8.0.18
 numpy==1.17.4
 pandas==0.25.3
 Pillow==6.2.1
-protobuf==3.11.1
+protobuf==3.18.3
 pycryptodome==3.9.4
 pygal==2.4.0
 PyMySQL==0.9.3
